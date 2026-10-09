@@ -1,0 +1,74 @@
+generator client {
+ provider = "prisma-client-js"
+}
+datasource db {
+ provider = "postgresql"
+ url = env("DATABASE_URL")
+}
+model User {
+ id String @id @default(uuid())
+ email String @unique
+ passwordHash String?
+ emailVerifiedAt DateTime?
+ createdAt DateTime @default(now())
+ deletedAt DateTime?
+ cvs Cv[]
+ sessions Session[]
+ auditLogs AuditLog[]
+}
+model Session {
+ id String @id @default(uuid())
+ userId String
+ user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+ tokenHash String @unique
+ expiresAt DateTime
+ revokedAt DateTime?
+ createdAt DateTime @default(now())
+ @@index([userId])
+}
+model Cv {
+ id String @id @default(uuid())
+ ownerId String
+ owner User @relation(fields:[ownerId],references:[id],onDelete:Cascade)
+ title String
+ templateId String
+ locale String @default("en")
+ theme Json
+ content Json
+ version Int @default(1)
+ isPublic Boolean @default(false)
+ slug String? @unique
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ deletedAt DateTime?
+ versions CvVersion[]
+ exports ExportJob[]
+ @@index([ownerId,updatedAt])
+}
+model CvVersion {
+ id String @id @default(uuid())
+ cvId String
+ cv Cv @relation(fields:[cvId],references:[id],onDelete:Cascade)
+ version Int
+ content Json
+ createdAt DateTime @default(now())
+ @@unique([cvId,version])
+}
+model ExportJob {
+ id String @id @default(uuid())
+ cvId String
+ cv Cv @relation(fields:[cvId],references:[id],onDelete:Cascade)
+ format String
+ status String @default("pending")
+ objectKey String?
+ createdAt DateTime @default(now())
+ @@index([cvId,createdAt])
+}
+model AuditLog {
+ id String @id @default(uuid())
+ userId String?
+ user User? @relation(fields:[userId],references:[id],onDelete:SetNull)
+ event String
+ createdAt DateTime @default(now())
+ @@index([userId,createdAt])
+}

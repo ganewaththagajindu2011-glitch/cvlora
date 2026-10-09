@@ -1,0 +1,89 @@
+@theme {
+  --color-ink: #172822;
+  --color-muted: #53645c;
+  --color-paper: #f7f9f5;
+  --color-forest: #163c2d;
+  --color-lime: #d8f36a;
+  --font-display: var(--font-outfit), sans-serif;
+  --font-sans:
+    var(--font-inter), 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif;
+}
+:root {
+  --surface: rgba(255, 255, 255, 0.93);
+  --surface-solid: #ffffff;
+  --text: #172822;
+  --muted: #53645c;
+  --background: #f7f9f5;
+  --line: #dbe2d9;
+  --radius-card: 24px;
+  --radius-button: 100px;
+  --shadow-card:
+    0 20px 60px rgba(23, 40, 34, 0.08), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  --blur: 12px;
+  --motion-fast: 160ms;
+  --motion-slow: 700ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --space-section: clamp(4rem, 9vw, 8rem);
+  color-scheme: light;
+}
+@media (min-width: 768px) {
+  :root {
+    --blur: 24px;
+  }
+}
+:root[data-theme='dark'] {
+  --surface: rgba(29, 45, 37, 0.95);
+  --surface-solid: #1d2d25;
+  --text: #f1f5eb;
+  --muted: #bccbbb;
+  --background: #12221a;
+  --line: #3e5243;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --surface: rgba(29, 45, 37, 0.95);
+    --surface-solid: #1d2d25;
+    --text: #f1f5eb;
+    --muted: #bccbbb;
+    --background: #12221a;
+    --line: #3e5243;
+    color-scheme: dark;
+  }
+}
+:root[data-quality='medium'] {
+  --blur: 6px;
+}
+:root[data-quality='low'] {
+  --blur: 0px;
+  --motion-fast: 0ms;
+  --motion-slow: 0ms;
+  --surface: var(--surface-solid);
+}
+.glass {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(var(--blur));
+  border-radius: var(--radius-card);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .glass {
+    background: var(--surface-solid);
+  }
+}
+:root[data-quality='low'] .glass {
+  backdrop-filter: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .glass {
+    backdrop-filter: none;
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "@cvlora/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --env-file=../../.env --import tsx --watch src/index.ts",
+    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --packages=external --alias:@cvlora/shared=../../packages/shared/src/index.ts --outfile=dist/index.js",
+    "start": "node --env-file=../../.env dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "prisma generate",
+    "db:migrate": "node --env-file=../../.env node_modules/prisma/build/index.js migrate deploy"
+  },
+  "dependencies": {
+    "fastify": "5.12.5",
+    "@fastify/helmet": "13.1.2",
+    "@fastify/cors": "11.3.1",
+    "@fastify/rate-limit": "11.2.1",
+    "@prisma/client": "6.19.3",
+    "ioredis": "5.8.2",
+    "@cvlora/shared": "workspace:*",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "prisma": "6.19.3",
+    "esbuild": "0.25.12"
+  }
+}

@@ -1,0 +1,7 @@
+pnpm exec lint-staged
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --pre-commit --staged --redact
+else
+  echo "gitleaks is required for commits; install it using README instructions." >&2
+  exit 1
+fi

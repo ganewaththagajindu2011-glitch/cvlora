@@ -1,0 +1,40 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .node-version
+      - run: corepack enable && corepack prepare pnpm@11.19.0 --activate
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - run: pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build
+      - run: node scripts/init-dev.mjs && docker compose up -d --wait && pnpm db:migrate
+      - name: Verify live API dependencies
+        run: |
+          pnpm --filter @cvlora/api start > /tmp/cvlora-api.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4000/ready > /tmp/cvlora-ready.json; then
+              node -e "const r=require('/tmp/cvlora-ready.json');if(r.status!=='ready')process.exit(1)"
+              exit 0
+            fi
+            sleep 1
+          done
+          exit 1
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+      - name: Start production web for budgets
+        run: |
+          pnpm --filter @cvlora/web start > /tmp/cvlora-web.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:3000/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - run: pnpm test:budgets && pnpm test:lighthouse
