@@ -783,3 +783,33 @@ h3 {
     font-size: 6px;
   }
 }
+
+.template-choose {
+  margin-top: 22px;
+}
+.template-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+.template-options article {
+  padding: 28px;
+  background: var(--surface-solid);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.template-options h2 {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+.template-options p {
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+@media (max-width: 760px) {
+  .template-options {
+    grid-template-columns: 1fr;
+  }
+}

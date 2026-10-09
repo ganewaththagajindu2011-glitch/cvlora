@@ -9,12 +9,12 @@ test('landing and template navigation work without browser errors', async ({
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
     'More than a CV',
   );
-  await page.getByRole('link', { name: 'Find your style' }).click();
+  await page.getByRole('link', { name: 'Browse templates' }).click();
   await expect(
-    page.getByRole('heading', { name: 'A clean beginning.' }),
+    page.getByRole('heading', { name: 'Choose your starting point.' }),
   ).toBeVisible();
   await expect(
-    page.getByText('Preview only — editing and export are not available yet.'),
+    page.getByRole('link', { name: 'Use Professional' }),
   ).toBeVisible();
   expect(errors).toEqual([]);
 });

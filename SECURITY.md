@@ -1,6 +1,6 @@
 # Security
 
-This is a development foundation, not a security-certified product. No system is 100% safe. Do not deploy with personal data until authentication, authorization, export isolation and privacy controls are complete.
+The browser-only CV editor is usable; this is not a security-certified product. No system is 100% safe. Server-side collection of personal CV data must stay disabled until authentication, authorization, export isolation and privacy controls are complete. Browser device saving is unencrypted, off by default, and described before opt-in.
 
 ## Reporting
 

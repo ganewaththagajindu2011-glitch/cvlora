@@ -1,22 +1,26 @@
-import { createHash } from 'node:crypto';
-import { readdirSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { NextRequest, NextResponse } from 'next/server';
 let cssHashes: string | undefined;
 function trustedCssHashes() {
   if (process.env.NODE_ENV !== 'production') return '';
   if (cssHashes !== undefined) return cssHashes;
-  const directory = join(process.cwd(), '.next/static/css');
-  const files = readdirSync(directory).filter((file) => file.endsWith('.css'));
-  if (!files.length) throw new Error('Trusted stylesheet assets are missing');
-  cssHashes = files
-    .map(
-      (file) =>
-        `'sha256-${createHash('sha256')
-          .update(readFileSync(join(directory, file)))
-          .digest('base64')}'`,
+  const hashes: unknown = JSON.parse(
+    readFileSync(
+      join(process.cwd(), '.next/trusted-style-hashes.json'),
+      'utf8',
+    ),
+  );
+  if (
+    !Array.isArray(hashes) ||
+    !hashes.length ||
+    !hashes.every(
+      (hash: unknown) =>
+        typeof hash === 'string' && /^sha256-[A-Za-z0-9+/]{43}=$/.test(hash),
     )
-    .join(' ');
+  )
+    throw new Error('Trusted stylesheet hashes are missing or invalid');
+  cssHashes = hashes.map((hash) => `'${hash}'`).join(' ');
   return cssHashes;
 }
 export function proxy(request: NextRequest) {

@@ -3,7 +3,7 @@ import { resolve, relative } from 'node:path';
 import { spawnSync } from 'node:child_process';
 const root = process.cwd();
 const entries = [];
-for (const route of ['/', '/templates']) {
+for (const route of ['/', '/templates', '/editor']) {
   const response = await fetch(`http://127.0.0.1:3000${route}`);
   if (!response.ok)
     throw new Error(`Cannot measure ${route}: HTTP ${response.status}`);
@@ -12,7 +12,7 @@ for (const route of ['/', '/templates']) {
   const inline = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)]
     .map((match) => match[1])
     .join('\n');
-  const inlinePath = `.budget-inline-${route === '/' ? 'landing' : 'templates'}.js`;
+  const inlinePath = `.budget-inline-${route === '/' ? 'landing' : route.slice(1)}.js`;
   writeFileSync(inlinePath, inline);
   files.add(inlinePath);
   for (const tag of html.matchAll(/<script\b[^>]*>/g)) {
@@ -37,7 +37,7 @@ for (const route of ['/', '/templates']) {
   entries.push({
     name: `${route} initial modern-browser JS`,
     path: [...files],
-    limit: '150 kB',
+    limit: route === '/editor' ? '250 kB' : '150 kB',
     gzip: true,
     brotli: false,
   });

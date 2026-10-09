@@ -1,7 +1,11 @@
 module.exports = {
   ci: {
     collect: {
-      url: ['http://127.0.0.1:3000/', 'http://127.0.0.1:3000/templates'],
+      url: [
+        'http://127.0.0.1:3000/',
+        'http://127.0.0.1:3000/templates',
+        'http://127.0.0.1:3000/editor',
+      ],
       numberOfRuns: 3,
       settings: { chromeFlags: '--headless --disable-gpu' },
     },

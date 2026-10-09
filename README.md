@@ -1,15 +1,30 @@
 # CVLora
 
-A CV builder for Sri Lanka and the global market. **Development foundation, not a production product.**
+A CV builder for Sri Lanka and the global market. The browser editor is usable; the full hosted product is still in development.
 
-## Current milestone
+## Create a CV now
 
-M0 introduces the pnpm monorepo, Next.js landing and sample-template preview, Fastify operational endpoints, shared strict Zod schemas, adaptive liquid-glass design tokens, self-hosted English/Sinhala/Tamil fonts, PostgreSQL/Redis infrastructure, Prisma schema, tooling and CI.
-Authentication, CV persistence/editor, the 24-template collection, exports, public sharing, billing, email and AI are **not implemented**. There are no account or CV endpoints. The worker refuses startup until its isolated rendering implementation exists. Do not use real personal information with this foundation.
+Open `/editor`, enter personal details, add and reorder sections, choose Professional, Modern or Classic, then use **Print / Save PDF**. In the browser print dialog select **Save as PDF**, paper **A4**, and disable browser headers and footers. Longer CVs flow onto additional printed pages; the on-screen preview is not a paginated print preview.
+
+The editor supports English, Sinhala and Tamil text, undo/redo, strict JSON draft import/download, text size and spacing. Your details stay in the browser. **Remember on this device** is optional and stores an unencrypted local copy; leave it off on shared devices. Download drafts to keep a portable copy. No login or database is needed for this workflow.
+
+With Node 24.19.0 and pnpm 11.19.0 installed:
+
+```sh
+pnpm install --frozen-lockfile
+pnpm --filter @cvlora/web build
+pnpm --filter @cvlora/web start
+```
+
+On your own computer, open `http://localhost:3000` and choose **Create my CV**. This starts the production web only and does not require Docker or an `.env` file.
+
+## Remaining product work
+
+M0 provides the monorepo, Fastify operational API, infrastructure and security/tooling foundation. The browser editor adds a real CV creation workflow. Authentication, server-side CV storage, the 24-template collection, isolated server PDF/PNG/DOCX exports, public sharing, billing, email and AI remain unimplemented. Browser printing is available; the server export worker still refuses startup. Three editable styles are available, rather than the complete planned template collection.
 
 ## Prerequisites
 
-Node 24.19.0, pnpm 11.19.0, Docker with Compose. Use Corepack to activate the pinned pnpm version. The cloud sandbox needs writable tool directories: `export PNPM_HOME=/workspace/.pnpm XDG_CACHE_HOME=/workspace/.cache`.
+Node 24.19.0 and pnpm 11.19.0. Docker with Compose is needed for the full API/infrastructure workflow below. Use Corepack to activate the pinned pnpm version. The cloud sandbox needs writable tool directories: `export PNPM_HOME=/workspace/.pnpm XDG_CACHE_HOME=/workspace/.cache`.
 Run `bash scripts/install-gitleaks.sh /workspace/cloud-setup/bin` to install Gitleaks 8.24.2 from its official GitHub release with its pinned SHA-256 verified, then prepend that directory to PATH. Both pre-commit and CI scan staged/committed changes. In this cloud machine it is available at `/workspace/cloud-setup/bin/gitleaks`.
 
 ## Local development

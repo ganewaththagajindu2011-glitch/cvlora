@@ -29,12 +29,8 @@ export default function Home() {
         </nav>
         <div className="header-actions">
           <ThemeToggle />
-          <Link
-            prefetch={false}
-            href="/templates"
-            className="button button-small"
-          >
-            Explore templates <Arrow />
+          <Link prefetch={false} href="/editor" className="button button-small">
+            Create your CV <Arrow />
           </Link>
         </div>
       </header>
@@ -67,12 +63,12 @@ export default function Home() {
               that opens doors — wherever your ambition takes you.
             </p>
             <div className="hero-actions">
-              <Link prefetch={false} href="/templates" className="button">
-                Find your style <Arrow />
+              <Link prefetch={false} href="/editor" className="button">
+                Create my CV <Arrow />
               </Link>
-              <a href="#how-it-works" className="text-link">
-                See how it works <span aria-hidden="true">↓</span>
-              </a>
+              <Link prefetch={false} href="/templates" className="text-link">
+                Browse templates <span aria-hidden="true">↗</span>
+              </Link>
             </div>
             <div className="hero-note">
               <span className="note-icon" aria-hidden="true">
@@ -172,9 +168,9 @@ export default function Home() {
               <br />
               to your next chapter.
             </h2>
-            <p>We’re building a simpler way to tell your professional story.</p>
-            <Link prefetch={false} href="/templates" className="button">
-              Preview the foundation <Arrow />
+            <p>A simpler way to tell your professional story.</p>
+            <Link prefetch={false} href="/editor" className="button">
+              Create your CV <Arrow />
             </Link>
           </div>
           <ol>
@@ -185,11 +181,11 @@ export default function Home() {
               },
               {
                 title: 'Make room for your story',
-                text: 'The live editor is next on our roadmap.',
+                text: 'Add your details and see your CV take shape.',
               },
               {
                 title: 'Take the next step',
-                text: 'Secure exports will follow the editor.',
+                text: 'Print your CV or save it as a PDF from your browser.',
               },
             ].map((s, i) => (
               <li key={s.title}>
@@ -205,9 +201,9 @@ export default function Home() {
         <section className="build-note">
           <span className="status-dot" />
           <p>
-            <strong>A thoughtful beginning.</strong> CVLora is in development.
-            This foundation preview does not collect CVs, create accounts, or
-            process payments.
+            <strong>Your story stays yours.</strong> Create a CV without an
+            account. Your details stay in your browser; device saving is
+            optional.
           </p>
         </section>
       </main>
