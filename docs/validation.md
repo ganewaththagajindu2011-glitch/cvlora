@@ -46,3 +46,7 @@ The latest Lighthouse run measured three mobile runs per route. Median scores an
 | Editor    | 97 / 100 / 96 / 60                                 | 2.113 s | 0      |
 
 Lighthouse assertions remain failing for landing/editor LCP. Editor SEO also fails because the editor intentionally uses `noindex`; this was preserved rather than changed to obtain a score. All accessibility, layout-shift and JavaScript budgets passed. This is not a claim that every release performance or full-product acceptance criterion passes.
+
+## Windows build correction
+
+Fixed a platform-specific trusted CSS path check that used a literal `/` after a Windows directory. Unit coverage now exercises Windows paths containing spaces/parentheses, parent and sibling escapes, different drives, non-CSS files and Linux paths. All 16 unit tests pass. The production build and HTTP 200 responses for `/` and `/editor` were verified on Linux; a native Windows end-to-end build was not available in this environment. The startup script also refuses an incomplete standalone build, verified against a deliberately missing preparation artifact.

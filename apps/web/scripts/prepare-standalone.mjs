@@ -7,6 +7,7 @@ import {
 } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { createHash } from 'node:crypto';
+import { isTrustedCssPath } from './trusted-css-path.mjs';
 const hashes = new Set();
 const cssRoot = resolve('.next/static/css');
 function hash(css) {
@@ -28,7 +29,7 @@ for (const file of readdirSync('.next/server/app', { recursive: true })) {
   }
   const contents = [...paths].map((path) => {
     const asset = resolve('.next', path);
-    if (!asset.startsWith(`${cssRoot}/`) || !asset.endsWith('.css'))
+    if (!isTrustedCssPath(cssRoot, asset))
       throw new Error('Unexpected trusted CSS path');
     return readFileSync(asset, 'utf8');
   });

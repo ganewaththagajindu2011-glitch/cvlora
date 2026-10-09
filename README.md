@@ -18,6 +18,12 @@ pnpm --filter @cvlora/web start
 
 On your own computer, open `http://localhost:3000` and choose **Create my CV**. This starts the production web only and does not require Docker or an `.env` file.
 
+### Windows troubleshooting
+
+Use Node 24.19.x and the pinned pnpm version. If a build fails, stop and fix it before running `start`. In PowerShell, stop the running server with Ctrl+C before rebuilding. A ZIP download has no `.git` directory; Husky’s `.git can’t be found` message does not prevent using the editor.
+
+The standalone preparation validates CSS asset paths using platform-aware path containment. A previous version incorrectly compared Windows paths against a `/` separator and failed with `Unexpected trusted CSS path`. Update the scripts from the latest repository version, rebuild, and restart. Open `http://localhost:3000/editor` in your own computer’s browser. The start script refuses an incomplete build instead of launching it.
+
 ## Remaining product work
 
 M0 provides the monorepo, Fastify operational API, infrastructure and security/tooling foundation. The browser editor adds a real CV creation workflow. Authentication, server-side CV storage, the 24-template collection, isolated server PDF/PNG/DOCX exports, public sharing, billing, email and AI remain unimplemented. Browser printing is available; the server export worker still refuses startup. Three editable styles are available, rather than the complete planned template collection.
